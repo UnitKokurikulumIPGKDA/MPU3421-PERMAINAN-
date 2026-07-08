@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemilihan Sukan Kokurikulum | Zon Atlet</title>
+    <title>Pemilihan Kokurikulum Permainan MPU3421 | Zon Atlet</title>
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -54,17 +54,36 @@
 </head>
 <body class="min-h-screen flex flex-col">
     
-    <div class="marquee-container py-2 text-xl font-oswald font-bold tracking-widest text-black">
+    <div class="marquee-container py-2 text-xl font-oswald font-bold tracking-widest text-black z-50">
         <div class="marquee-content">
             PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD /// PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD ///
         </div>
     </div>
 
-    <div id="root" class="flex-grow flex flex-col"></div>
+    <div id="root" class="flex-grow flex flex-col relative"></div>
 
     <script type="text/babel">
         // ---> Sila letakkan URL Web App anda di bawah ini:
         const API_URL = "https://script.google.com/macros/s/AKfycbz-72ijRhwX10Gr1k8SbdH7UNvsEqZeIzuki16o68yBoNTylEN-GWPJa6GxhMJwF1hI-A/exec";
+
+        // Fungsi bantuan menukar link Google Drive kepada imej terus
+        const getDirectImageUrl = (url) => {
+            if (!url) return null;
+            let fileId = '';
+            try {
+                if (url.includes('id=')) {
+                    fileId = url.split('id=')[1].split('&')[0];
+                } else if (url.includes('/d/')) {
+                    fileId = url.split('/d/')[1].split('/')[0];
+                }
+                if (fileId) {
+                    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+                }
+            } catch (e) {
+                console.error("Gagal format imej", e);
+            }
+            return url; 
+        };
 
         const App = () => {
             const [view, setView] = React.useState('login'); 
@@ -142,10 +161,9 @@
                     if (data.status === 'success') {
                         setView('success');
                     } else if (data.code === 'QUOTA_FULL') {
-                        // Jika penuh akibat login serentak
                         setError(data.message);
-                        setPilihan1(''); // Kosongkan pilihan 1 supaya pelajar terpaksa pilih semula
-                        fetchSports(student.jantina); // Refresh dashboard dengan baki baharu
+                        setPilihan1(''); 
+                        fetchSports(student.jantina); 
                     } else {
                         setError(data.message);
                         setLoading(false);
@@ -161,7 +179,6 @@
                 setPilihan2('');
                 setPilihan3('');
                 setError('');
-                // Pilihan: Boleh aktifkan fetchSports(student.jantina) di sini jika mahu ia refresh kouta semasa reset
             };
 
             const isSelectedElseWhere = (sportName, currentChoice) => {
@@ -171,13 +188,24 @@
                 return false;
             };
 
+            // Komponen Hakmilik (Footer)
+            const CopyrightFooter = () => (
+                <div className="w-full text-center py-4 mt-8">
+                    <p className="font-oswald text-[11px] sm:text-xs font-bold tracking-widest text-black uppercase opacity-60">
+                        Hakmilik Unit Kokurikulum IPG Kampus Darulaman <br className="md:hidden" />
+                        <span className="hidden md:inline"> | </span>
+                        Disediakan oleh Haniff Faizal Bin Chek Ani a.k.a KeraBerok
+                    </p>
+                </div>
+            );
+
             if (view === 'login') {
                 return (
-                    <div className="flex-grow flex items-center justify-center p-4">
-                        <div className="bg-white neo-border neo-shadow max-w-md w-full p-8 relative">
+                    <div className="flex-grow flex flex-col items-center justify-center p-4">
+                        <div className="bg-white neo-border neo-shadow max-w-md w-full p-8 relative mt-10">
                             <div className="absolute -top-4 -left-4 w-16 h-8 bg-[#ccff00] neo-border rotate-[-10deg]"></div>
                             <h1 className="font-oswald text-4xl mb-2 leading-tight">ZON<br/>ATLET</h1>
-                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Sukan Kokurikulum.</p>
+                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Kokurikulum Permainan.</p>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <div>
@@ -195,20 +223,42 @@
                                 </button>
                             </form>
                         </div>
+                        <div className="mt-auto"><CopyrightFooter /></div>
                     </div>
                 );
             }
 
             if (view === 'selection') {
                 return (
-                    <div className="max-w-4xl mx-auto w-full p-4 pb-32">
+                    <div className="max-w-4xl mx-auto w-full p-4 pb-48">
                         {}
                         <div className="bg-[#1a1a1a] text-white neo-border p-6 mb-4 mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
-                            <div className="relative z-10">
-                                <p className="text-[#ccff00] font-oswald text-sm tracking-widest mb-1">PROFIL ATLET</p>
-                                <h2 className="font-oswald text-2xl md:text-3xl">{student.nama}</h2>
+                            <div className="flex flex-row items-center gap-4 relative z-10">
+                                {/* Bahagian Gambar Profil */}
+                                {student.gambar ? (
+                                    <div className="w-20 h-20 md:w-24 md:h-24 bg-white neo-border flex-shrink-0 overflow-hidden neo-shadow">
+                                        <img 
+                                            src={getDirectImageUrl(student.gambar)} 
+                                            alt="Profil Pelajar" 
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => { 
+                                                e.target.onerror = null; 
+                                                e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(student.nama) + '&background=ccff00&color=000&bold=true&size=128'; 
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-20 h-20 md:w-24 md:h-24 bg-[#ccff00] text-black neo-border flex-shrink-0 overflow-hidden neo-shadow flex items-center justify-center">
+                                        <i className="ph-fill ph-user text-4xl md:text-5xl"></i>
+                                    </div>
+                                )}
+                                
+                                <div>
+                                    <p className="text-[#ccff00] font-oswald text-sm tracking-widest mb-1">PROFIL ATLET</p>
+                                    <h2 className="font-oswald text-xl sm:text-2xl md:text-3xl leading-tight">{student.nama}</h2>
+                                </div>
                             </div>
-                            <div className="bg-white text-black px-4 py-2 neo-border inline-block font-bold relative z-10">
+                            <div className="bg-white text-black px-4 py-2 neo-border inline-block font-bold relative z-10 whitespace-nowrap self-start md:self-auto">
                                 KELAS: <span className="text-[#00e5ff] mr-4">{student.kelas}</span>
                                 JANTINA: <span className="text-[#ff3366]">{student.jantina}</span>
                             </div>
@@ -305,8 +355,8 @@
                         </div>
 
                         {}
-                        <div className="fixed bottom-0 left-0 right-0 bg-[#f4f4f0]/95 backdrop-blur-sm border-t-4 border-black p-4 z-50 flex justify-center">
-                            <div className="max-w-4xl w-full flex items-center justify-between gap-4">
+                        <div className="fixed bottom-0 left-0 right-0 bg-[#f4f4f0]/95 backdrop-blur-md border-t-4 border-black z-50 flex flex-col items-center">
+                            <div className="p-4 max-w-4xl w-full flex items-center justify-between gap-4">
                                 {/* Butang Reset */}
                                 <button 
                                     onClick={handleReset}
@@ -330,6 +380,9 @@
                                     {!loading && <i className="ph ph-paper-plane-right text-2xl"></i>}
                                 </button>
                             </div>
+                            <div className="w-full bg-white border-t-4 border-black p-1 pb-2">
+                                <CopyrightFooter />
+                            </div>
                         </div>
                     </div>
                 );
@@ -337,8 +390,8 @@
 
             if (view === 'success') {
                 return (
-                    <div className="flex-grow flex items-center justify-center p-4">
-                        <div className="bg-[#ccff00] neo-border neo-shadow max-w-lg w-full p-10 text-center relative overflow-hidden">
+                    <div className="flex-grow flex flex-col items-center justify-center p-4">
+                        <div className="bg-[#ccff00] neo-border neo-shadow max-w-lg w-full p-10 text-center relative overflow-hidden mt-10">
                             <div className="absolute top-[-50px] right-[-50px] text-black/10">
                                 <i className="ph-fill ph-trophy text-[200px]"></i>
                             </div>
@@ -354,6 +407,7 @@
                             
                             <p className="text-sm font-bold relative z-10 text-black">Sila maklumkan kepada guru/pensyarah anda bahawa proses telah tamat. Anda boleh menutup halaman ini sekarang.</p>
                         </div>
+                        <div className="mt-auto"><CopyrightFooter /></div>
                     </div>
                 );
             }
