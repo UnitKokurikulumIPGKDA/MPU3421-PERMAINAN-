@@ -33,112 +33,48 @@
             background-size: 20px 20px;
         }
 
-        .font-oswald {
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-        }
+        .font-oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        .neo-border { border: 4px solid #000; }
+        .neo-shadow { box-shadow: 6px 6px 0px #000; transition: all 0.2s ease; }
+        .neo-shadow:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #000; }
+        .neo-shadow-active:active { transform: translate(6px, 6px) !important; box-shadow: 0px 0px 0px #000 !important; }
+        .neo-input { border: 4px solid #000; box-shadow: 4px 4px 0px #000; transition: all 0.2s ease; }
+        .neo-input:focus { outline: none; box-shadow: 0px 0px 0px #000; transform: translate(4px, 4px); }
 
-        .neo-border {
-            border: 4px solid #000;
-        }
+        .marquee-container { overflow: hidden; white-space: nowrap; border-bottom: 4px solid black; border-top: 4px solid black; background-color: #ccff00; }
+        .marquee-content { display: inline-block; animation: marquee 15s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .neo-shadow {
-            box-shadow: 6px 6px 0px #000;
-            transition: all 0.2s ease;
-        }
-
-        .neo-shadow:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 8px 8px 0px #000;
-        }
-
-        .neo-shadow-active:active {
-            transform: translate(6px, 6px) !important;
-            box-shadow: 0px 0px 0px #000 !important;
-        }
-
-        .neo-input {
-            border: 4px solid #000;
-            box-shadow: 4px 4px 0px #000;
-            transition: all 0.2s ease;
-        }
-
-        .neo-input:focus {
-            outline: none;
-            box-shadow: 0px 0px 0px #000;
-            transform: translate(4px, 4px);
-        }
-
-        /* Marquee Animation */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            border-bottom: 4px solid black;
-            border-top: 4px solid black;
-            background-color: #ccff00;
-        }
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 15s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .radio-custom:checked + div {
-            background-color: #000;
-            color: #fff;
-        }
+        .radio-custom:checked + div { background-color: #000; color: #fff; transform: translate(4px, 4px); box-shadow: 0px 0px 0px #000; }
+        .radio-custom:disabled + div { opacity: 0.5; background-color: #e5e7eb; color: #9ca3af; border-color: #9ca3af; box-shadow: none; cursor: not-allowed; transform: none; }
         
-        .radio-custom:disabled + div {
-            opacity: 0.4;
-            background-color: #e5e7eb;
-            color: #9ca3af;
-            border-color: #9ca3af;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* Spinner */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #000;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-        }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #000; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
     
-    <!-- Marquee Header -->
     <div class="marquee-container py-2 text-xl font-oswald font-bold tracking-widest text-black">
         <div class="marquee-content">
-            PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD /// PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD /// PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD ///
+            PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD /// PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD ///
         </div>
     </div>
 
     <div id="root" class="flex-grow flex flex-col"></div>
 
     <script type="text/babel">
-        // --- MASUKKAN WEB APP URL ANDA DI SINI ---
+        // ---> Sila letakkan URL Web App anda di bawah ini:
         const API_URL = "https://script.google.com/macros/s/AKfycbz-72ijRhwX10Gr1k8SbdH7UNvsEqZeIzuki16o68yBoNTylEN-GWPJa6GxhMJwF1hI-A/exec";
 
         const App = () => {
-            const [view, setView] = React.useState('login'); // 'login', 'selection', 'success'
+            const [view, setView] = React.useState('login'); 
             const [loading, setLoading] = React.useState(false);
             const [error, setError] = React.useState('');
             
             const [noKp, setNoKp] = React.useState('');
             const [student, setStudent] = React.useState(null);
-            const [sports, setSports] = React.useState([]);
             
+            const [sports, setSports] = React.useState([]);
             const [pilihan1, setPilihan1] = React.useState('');
             const [pilihan2, setPilihan2] = React.useState('');
             const [pilihan3, setPilihan3] = React.useState('');
@@ -146,17 +82,14 @@
             const handleLogin = async (e) => {
                 e.preventDefault();
                 if (!noKp) return;
-                
-                setLoading(true);
-                setError('');
-                
+                setLoading(true); setError('');
                 try {
-                    const res = await fetch(`${API_URL}?action=login&no_kp=${noKp}`);
+                    const res = await fetch(`${API_URL}?action=login&no_kp=${noKp}`, { redirect: 'follow' });
                     const data = await res.json();
                     
                     if (data.status === 'success') {
                         setStudent(data.data);
-                        fetchSports(data.data.jantina);
+                        fetchSports(data.data.jantina); 
                     } else {
                         setError(data.message);
                         setLoading(false);
@@ -169,9 +102,8 @@
 
             const fetchSports = async (jantina) => {
                 try {
-                    const res = await fetch(`${API_URL}?action=getSports&jantina=${jantina}`);
+                    const res = await fetch(`${API_URL}?action=getSports&jantina=${jantina}`, { redirect: 'follow' });
                     const data = await res.json();
-                    
                     if (data.status === 'success') {
                         setSports(data.data);
                         setView('selection');
@@ -190,23 +122,18 @@
                     setError("Sila lengkapkan ketiga-tiga pilihan sukan anda.");
                     return;
                 }
-                
-                setLoading(true);
-                setError('');
+                setLoading(true); setError('');
                 
                 try {
                     const payload = {
                         no_kp: student.no_kp,
-                        pilihan1: pilihan1,
-                        pilihan2: pilihan2,
-                        pilihan3: pilihan3
+                        pilihan1: pilihan1, pilihan2: pilihan2, pilihan3: pilihan3
                     };
 
                     const res = await fetch(API_URL, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain;charset=utf-8',
-                        },
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        redirect: 'follow',
                         body: JSON.stringify(payload)
                     });
                     
@@ -214,17 +141,29 @@
                     
                     if (data.status === 'success') {
                         setView('success');
+                    } else if (data.code === 'QUOTA_FULL') {
+                        // Jika penuh akibat login serentak
+                        setError(data.message);
+                        setPilihan1(''); // Kosongkan pilihan 1 supaya pelajar terpaksa pilih semula
+                        fetchSports(student.jantina); // Refresh dashboard dengan baki baharu
                     } else {
                         setError(data.message);
+                        setLoading(false);
                     }
                 } catch (err) {
-                    setError("Gagal menghantar data. Sila cuba lagi.");
-                } finally {
+                    setError("Gagal menghantar data.");
                     setLoading(false);
                 }
             };
 
-            // Helpers for Option Filtering
+            const handleReset = () => {
+                setPilihan1('');
+                setPilihan2('');
+                setPilihan3('');
+                setError('');
+                // Pilihan: Boleh aktifkan fetchSports(student.jantina) di sini jika mahu ia refresh kouta semasa reset
+            };
+
             const isSelectedElseWhere = (sportName, currentChoice) => {
                 if (currentChoice !== 1 && pilihan1 === sportName) return true;
                 if (currentChoice !== 2 && pilihan2 === sportName) return true;
@@ -236,36 +175,22 @@
                 return (
                     <div className="flex-grow flex items-center justify-center p-4">
                         <div className="bg-white neo-border neo-shadow max-w-md w-full p-8 relative">
-                            {/* Decorative Tape */}
                             <div className="absolute -top-4 -left-4 w-16 h-8 bg-[#ccff00] neo-border rotate-[-10deg]"></div>
-                            
                             <h1 className="font-oswald text-4xl mb-2 leading-tight">ZON<br/>ATLET</h1>
-                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Sukan Kokurikulum Rasmi.</p>
+                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Sukan Kokurikulum.</p>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <div>
                                     <label className="block font-oswald text-lg font-bold mb-2">NO KAD PENGENALAN</label>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Contoh: 010203011234"
-                                        value={noKp}
-                                        onChange={(e) => setNoKp(e.target.value)}
-                                        className="w-full p-4 neo-input text-lg font-bold placeholder-gray-400"
-                                    />
+                                    <input type="text" placeholder="Contoh: 010203011234" value={noKp} onChange={(e) => setNoKp(e.target.value)} className="w-full p-4 neo-input text-lg font-bold placeholder-gray-400" />
                                 </div>
-                                
                                 {error && (
                                     <div className="bg-[#ff3366] text-white p-3 neo-border text-sm font-bold flex items-center gap-2">
                                         <i className="ph ph-warning-circle text-xl"></i> {error}
                                     </div>
                                 )}
-                                
-                                <button 
-                                    type="submit" 
-                                    disabled={loading}
-                                    className="w-full bg-[#ccff00] py-4 neo-border neo-shadow neo-shadow-active font-oswald text-2xl font-bold flex items-center justify-center gap-2"
-                                >
-                                    {loading ? <span className="loader"></span> : "TERUSKAN"}
+                                <button type="submit" disabled={loading} className="w-full bg-[#ccff00] py-4 neo-border neo-shadow neo-shadow-active font-oswald text-2xl font-bold flex items-center justify-center gap-2">
+                                    {loading ? <span className="loader"></span> : "LOG MASUK"}
                                     {!loading && <i className="ph ph-arrow-right text-2xl"></i>}
                                 </button>
                             </form>
@@ -276,48 +201,59 @@
 
             if (view === 'selection') {
                 return (
-                    <div className="max-w-4xl mx-auto w-full p-4 pb-24">
-                        {/* Header ID Card */}
-                        <div className="bg-[#1a1a1a] text-white neo-border p-6 mb-8 mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div>
+                    <div className="max-w-4xl mx-auto w-full p-4 pb-32">
+                        {}
+                        <div className="bg-[#1a1a1a] text-white neo-border p-6 mb-4 mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+                            <div className="relative z-10">
                                 <p className="text-[#ccff00] font-oswald text-sm tracking-widest mb-1">PROFIL ATLET</p>
-                                <h2 className="font-oswald text-3xl">{student.nama}</h2>
+                                <h2 className="font-oswald text-2xl md:text-3xl">{student.nama}</h2>
                             </div>
-                            <div className="bg-white text-black px-4 py-2 neo-border inline-block font-bold">
-                                JANTINA: <span className="text-[#ff3366]">{student.jantina === 'L' ? 'LELAKI' : 'PEREMPUAN'}</span>
+                            <div className="bg-white text-black px-4 py-2 neo-border inline-block font-bold relative z-10">
+                                KELAS: <span className="text-[#00e5ff] mr-4">{student.kelas}</span>
+                                JANTINA: <span className="text-[#ff3366]">{student.jantina}</span>
                             </div>
                         </div>
 
+                        {}
+                        <div className="bg-white neo-border p-4 md:p-6 mb-8 neo-shadow">
+                            <div className="flex items-center gap-2 mb-4 border-b-4 border-black pb-2">
+                                <i className="ph-fill ph-chart-bar text-2xl"></i>
+                                <h3 className="font-oswald text-xl font-bold">DASHBOARD KEKOSONGAN (PILIHAN 1)</h3>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                {sports.map((s, idx) => (
+                                    <div key={`dash-${idx}`} className={`p-2 neo-border flex justify-between items-center ${s.baki > 0 ? 'bg-[#ccff00]' : 'bg-[#ff3366] text-white'}`}>
+                                        <span className="font-bold text-sm truncate mr-2" title={s.permainan}>{s.permainan}</span>
+                                        <span className="bg-black text-white px-2 py-1 font-oswald text-sm neo-border">{s.baki}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-xs font-bold text-gray-500 mt-3">* Pilihan 2 dan Pilihan 3 tidak tertakluk kepada baki kuota ini.</p>
+                        </div>
+
                         {error && (
-                            <div className="bg-[#ff3366] text-white p-4 neo-border neo-shadow mb-8 font-bold flex items-center gap-2">
-                                <i className="ph ph-warning-circle text-2xl"></i> {error}
+                            <div className="bg-[#ff3366] text-white p-4 neo-border neo-shadow mb-8 font-bold flex items-start gap-3">
+                                <i className="ph ph-warning-circle text-3xl"></i> 
+                                <span className="text-lg leading-tight">{error}</span>
                             </div>
                         )}
 
                         <div className="space-y-12">
-                            {/* PILIHAN 1 (Tertakluk kepada kuota) */}
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-[#ccff00] h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">1</div>
-                                    <h3 className="font-oswald text-2xl">PILIHAN UTAMA <span className="text-sm bg-black text-[#ccff00] px-2 py-1 ml-2 align-middle">KUOTA AKTIF</span></h3>
+                                    <h3 className="font-oswald text-2xl">PILIHAN UTAMA</h3>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     {sports.map((s, idx) => {
                                         const disabled = s.koutaPenuh || isSelectedElseWhere(s.permainan, 1);
                                         return (
                                             <label key={`p1-${idx}`} className="cursor-pointer relative block">
-                                                <input 
-                                                    type="radio" 
-                                                    name="pilihan1" 
-                                                    value={s.permainan}
-                                                    checked={pilihan1 === s.permainan}
-                                                    onChange={() => setPilihan1(s.permainan)}
-                                                    disabled={disabled}
-                                                    className="peer sr-only radio-custom"
-                                                />
-                                                <div className={`bg-white p-4 neo-border font-bold text-center h-full flex flex-col justify-center gap-2 ${disabled ? '' : 'neo-shadow hover:-translate-y-1 hover:-translate-x-1'} transition-all`}>
+                                                <input type="radio" name="pilihan1" value={s.permainan} checked={pilihan1 === s.permainan} onChange={() => setPilihan1(s.permainan)} disabled={disabled} className="peer sr-only radio-custom" />
+                                                <div className={`bg-white p-4 neo-border font-bold text-center h-full flex flex-col justify-center items-center gap-2 ${disabled ? '' : 'neo-shadow hover:-translate-y-1 hover:-translate-x-1'} transition-all`}>
                                                     <span className="text-lg">{s.permainan}</span>
-                                                    {s.koutaPenuh && <span className="text-[10px] bg-red-100 text-red-600 px-2 py-1 uppercase tracking-wider">Kuota Penuh</span>}
+                                                    {s.koutaPenuh && (<span className="text-[10px] bg-red-100 border border-red-600 text-red-600 px-2 py-1 uppercase tracking-wider font-oswald">Kuota Penuh</span>)}
                                                 </div>
                                             </label>
                                         )
@@ -325,7 +261,7 @@
                                 </div>
                             </section>
 
-                            {/* PILIHAN 2 (Semua sukan jantina, tolak pilihan lain) */}
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-white h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">2</div>
@@ -336,15 +272,7 @@
                                         const disabled = isSelectedElseWhere(s.permainan, 2);
                                         return (
                                             <label key={`p2-${idx}`} className="cursor-pointer relative block">
-                                                <input 
-                                                    type="radio" 
-                                                    name="pilihan2" 
-                                                    value={s.permainan}
-                                                    checked={pilihan2 === s.permainan}
-                                                    onChange={() => setPilihan2(s.permainan)}
-                                                    disabled={disabled}
-                                                    className="peer sr-only radio-custom"
-                                                />
+                                                <input type="radio" name="pilihan2" value={s.permainan} checked={pilihan2 === s.permainan} onChange={() => setPilihan2(s.permainan)} disabled={disabled} className="peer sr-only radio-custom" />
                                                 <div className={`bg-white p-4 neo-border font-bold text-center h-full flex flex-col justify-center gap-2 ${disabled ? '' : 'neo-shadow hover:-translate-y-1 hover:-translate-x-1'} transition-all`}>
                                                     <span className="text-lg">{s.permainan}</span>
                                                 </div>
@@ -354,7 +282,7 @@
                                 </div>
                             </section>
 
-                            {/* PILIHAN 3 (Semua sukan jantina, tolak pilihan lain) */}
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-white h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">3</div>
@@ -365,15 +293,7 @@
                                         const disabled = isSelectedElseWhere(s.permainan, 3);
                                         return (
                                             <label key={`p3-${idx}`} className="cursor-pointer relative block">
-                                                <input 
-                                                    type="radio" 
-                                                    name="pilihan3" 
-                                                    value={s.permainan}
-                                                    checked={pilihan3 === s.permainan}
-                                                    onChange={() => setPilihan3(s.permainan)}
-                                                    disabled={disabled}
-                                                    className="peer sr-only radio-custom"
-                                                />
+                                                <input type="radio" name="pilihan3" value={s.permainan} checked={pilihan3 === s.permainan} onChange={() => setPilihan3(s.permainan)} disabled={disabled} className="peer sr-only radio-custom" />
                                                 <div className={`bg-white p-4 neo-border font-bold text-center h-full flex flex-col justify-center gap-2 ${disabled ? '' : 'neo-shadow hover:-translate-y-1 hover:-translate-x-1'} transition-all`}>
                                                     <span className="text-lg">{s.permainan}</span>
                                                 </div>
@@ -384,19 +304,30 @@
                             </section>
                         </div>
 
-                        {/* Submit Button Sticky Area */}
-                        <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t-4 border-black p-4 z-50 flex justify-center">
-                            <div className="max-w-4xl w-full flex items-center justify-between">
+                        {}
+                        <div className="fixed bottom-0 left-0 right-0 bg-[#f4f4f0]/95 backdrop-blur-sm border-t-4 border-black p-4 z-50 flex justify-center">
+                            <div className="max-w-4xl w-full flex items-center justify-between gap-4">
+                                {/* Butang Reset */}
+                                <button 
+                                    onClick={handleReset}
+                                    className="px-4 py-3 bg-[#ff3366] text-white neo-border font-oswald font-bold neo-shadow neo-shadow-active flex items-center gap-2"
+                                >
+                                    <i className="ph-bold ph-arrow-counter-clockwise text-xl"></i>
+                                    <span className="hidden sm:inline">RESET</span>
+                                </button>
+                                
                                 <div className="hidden md:block font-bold">
-                                    Status: { (pilihan1 && pilihan2 && pilihan3) ? <span className="text-green-600">Lengkap</span> : <span className="text-red-500">Belum Lengkap</span> }
+                                    Status: { (pilihan1 && pilihan2 && pilihan3) ? <span className="bg-black text-[#ccff00] px-3 py-1 font-oswald tracking-widest text-sm neo-border">SEDIA DIHANTAR</span> : <span className="bg-white px-3 py-1 neo-border text-red-500 font-oswald">MENUNGGU PILIHAN</span> }
                                 </div>
+
+                                {/* Butang Hantar */}
                                 <button 
                                     onClick={handleSubmit}
                                     disabled={loading || !pilihan1 || !pilihan2 || !pilihan3}
-                                    className={`px-8 py-3 neo-border font-oswald text-xl font-bold flex items-center gap-2 ${(!pilihan1 || !pilihan2 || !pilihan3) ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed' : 'bg-[#00e5ff] text-black neo-shadow neo-shadow-active'}`}
+                                    className={`flex-grow sm:flex-grow-0 px-8 py-3 neo-border font-oswald text-xl font-bold flex items-center justify-center gap-2 ${(!pilihan1 || !pilihan2 || !pilihan3) ? 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed' : 'bg-[#00e5ff] text-black neo-shadow neo-shadow-active'}`}
                                 >
-                                    {loading ? <span className="loader"></span> : "HANTAR PILIHAN"}
-                                    {!loading && <i className="ph ph-check-fat text-2xl"></i>}
+                                    {loading ? <span className="loader"></span> : "HANTAR REKOD"}
+                                    {!loading && <i className="ph ph-paper-plane-right text-2xl"></i>}
                                 </button>
                             </div>
                         </div>
@@ -411,16 +342,17 @@
                             <div className="absolute top-[-50px] right-[-50px] text-black/10">
                                 <i className="ph-fill ph-trophy text-[200px]"></i>
                             </div>
-                            <h1 className="font-oswald text-6xl mb-4 relative z-10">SELESAI!</h1>
-                            <p className="text-xl font-bold mb-6 relative z-10">Pilihan sukan anda telah berjaya direkodkan.</p>
+                            <h1 className="font-oswald text-6xl mb-4 relative z-10 text-black">SELESAI!</h1>
+                            <p className="text-xl font-bold mb-6 relative z-10 text-black">Pilihan sukan anda telah berjaya direkodkan dalam sistem.</p>
                             
-                            <div className="bg-white p-4 neo-border inline-block relative z-10 text-left mb-8">
-                                <p><strong>PILIHAN 1:</strong> {pilihan1}</p>
-                                <p><strong>PILIHAN 2:</strong> {pilihan2}</p>
-                                <p><strong>PILIHAN 3:</strong> {pilihan3}</p>
+                            <div className="bg-white p-6 neo-border inline-block relative z-10 text-left mb-8 w-full max-w-sm">
+                                <p className="mb-2 text-sm text-gray-500 font-bold uppercase tracking-widest border-b-2 border-black pb-2">Ringkasan Pilihan</p>
+                                <p className="text-lg mt-2"><strong>1.</strong> {pilihan1}</p>
+                                <p className="text-lg"><strong>2.</strong> {pilihan2}</p>
+                                <p className="text-lg"><strong>3.</strong> {pilihan3}</p>
                             </div>
                             
-                            <p className="text-sm font-bold relative z-10">Anda boleh menutup tetingkap ini.</p>
+                            <p className="text-sm font-bold relative z-10 text-black">Sila maklumkan kepada guru/pensyarah anda bahawa proses telah tamat. Anda boleh menutup halaman ini sekarang.</p>
                         </div>
                     </div>
                 );
