@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemilihan Sukan Kokurikulum | Zon Atlet</title>
+    <title>Pemilihan Kokurikulum Permainan | MPU4321 OGOS-DIS 2026</title>
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -227,7 +227,7 @@
                     <p className="font-oswald text-[11px] sm:text-xs font-bold tracking-widest text-black uppercase opacity-60 px-4">
                         Hakmilik Unit Kokurikulum IPG Kampus Darulaman <br className="md:hidden" />
                         <span className="hidden md:inline"> | </span>
-                        Disediakan oleh Haniff Faizal Bin Chek Ani (Timbalan Ketua Unit)
+                        Disediakan oleh Haniff Faizal Bin Chek Ani (KeraBerok)
                     </p>
                 </div>
             );
@@ -237,8 +237,8 @@
                     <div className="flex-grow flex flex-col items-center justify-center p-4">
                         <div className="bg-white neo-border neo-shadow max-w-md w-full p-8 relative mt-10">
                             <div className="absolute -top-4 -left-4 w-16 h-8 bg-[#ccff00] neo-border rotate-[-10deg]"></div>
-                            <h1 className="font-oswald text-4xl mb-2 leading-tight">ZON<br/>ATLET</h1>
-                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Sukan Kokurikulum.</p>
+                            <h1 className="font-oswald text-4xl mb-2 leading-tight">MPU3421<br/>PELAJAR</h1>
+                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Kokurikulum Permainan.</p>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <div>
@@ -433,31 +433,27 @@
                                 PROFIL ATLET
                             </h1>
                             <p className="text-lg font-bold mb-6 relative z-10 text-black">
-                                Selamat kembali, {student.nama}. Pilihan sukan anda telah direkodkan.
+                                Selamat kembali, {student.nama}. Tahniah anda telah rekod pilihan anda telah disahkan berdasarkan pilihan anda.
                             </p>
                             
                             <div className="space-y-4 relative z-10">
+                                {/* HANYA PAPARKAN PILIHAN 1 SAHAJA */}
                                 {[
-                                    { label: "PILIHAN UTAMA (1)", sport: pilihan1 },
-                                    { label: "PILIHAN KEDUA (2)", sport: pilihan2 },
-                                    { label: "PILIHAN KETIGA (3)", sport: pilihan3 }
+                                    { label: "PILIHAN UTAMA (1) - RAKAN SEPASUKAN", sport: pilihan1 }
                                 ].map((item, idx) => (
-                                    <div key={idx} className="bg-white p-4 neo-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div key={idx} className="bg-white p-6 neo-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div>
                                             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">{item.label}</p>
-                                            <p className="text-xl font-bold">{item.sport}</p>
+                                            <p className="text-2xl font-bold mt-1">{item.sport}</p>
                                         </div>
-                                        {/* Butang lihat pelajar HANYA untuk Pilihan 1 */}
-                                        {idx === 0 ? (
-                                            <button 
-                                                onClick={() => fetchMembers(item.sport)}
-                                                className="bg-black text-[#ccff00] px-4 py-3 font-oswald text-sm neo-border flex items-center justify-center gap-2 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(204,255,0,1)] transition-all flex-shrink-0"
-                                            >
-                                                <i className="ph-bold ph-users text-lg"></i> RAKAN SEPASUKAN
-                                            </button>
-                                        ) : (
-                                            <div className="text-xs font-bold text-gray-400">STATUS MENUNGGU</div>
-                                        )}
+                                        
+                                        <button 
+                                            onClick={() => fetchMembers(item.sport)}
+                                            className="bg-black text-[#ccff00] px-6 py-4 font-oswald text-lg neo-border flex items-center justify-center gap-2 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(204,255,0,1)] transition-all flex-shrink-0"
+                                        >
+                                            <i className="ph-bold ph-users text-2xl"></i> LIHAT SENARAI
+                                        </button>
+                                        
                                     </div>
                                 ))}
                             </div>
