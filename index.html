@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemilihan Kokurikulum Permainan | MPU4321 OGOS-DIS 2026</title>
+    <title>Pemilihan Sukan Kokurikulum | Zon Atlet</title>
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -24,6 +24,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* NEUBRUTALISM STYLES */
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: #f4f4f0;
@@ -53,7 +54,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
     
-    <div class="marquee-container py-2 text-xl font-oswald font-bold tracking-widest text-black z-50 relative">
+    <div class="marquee-container py-2 text-xl font-oswald font-bold tracking-widest text-black z-50">
         <div class="marquee-content">
             PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD /// PEMILIHAN SUKAN 2026 /// PILIH SUKAN ANDA /// BERTINDAK SEGERA /// KUOTA TERHAD ///
         </div>
@@ -65,7 +66,7 @@
         // ---> Sila letakkan URL Web App anda di bawah ini:
         const API_URL = "https://script.google.com/macros/s/AKfycbz-72ijRhwX10Gr1k8SbdH7UNvsEqZeIzuki16o68yBoNTylEN-GWPJa6GxhMJwF1hI-A/exec";
 
-        // Fungsi convert link Google Drive
+        // Fungsi bantuan menukar link Google Drive kepada imej terus
         const getDirectImageUrl = (url) => {
             if (!url) return null;
             let fileId = '';
@@ -97,7 +98,7 @@
             const [pilihan2, setPilihan2] = React.useState('');
             const [pilihan3, setPilihan3] = React.useState('');
 
-            // State untuk Dashboard Ahli Pasukan
+            // State untuk Dashboard Pelajar (lihat balik pilihan & senarai rakan)
             const [viewMembersSport, setViewMembersSport] = React.useState(null);
             const [membersList, setMembersList] = React.useState([]);
             const [loadingMembers, setLoadingMembers] = React.useState(false);
@@ -117,6 +118,7 @@
                             setPilihan2(data.data.pilihan2);
                             setPilihan3(data.data.pilihan3);
                             setView('dashboard_pelajar');
+                            setLoading(false);
                         } else {
                             fetchSports(data.data.jantina); 
                         }
@@ -170,7 +172,7 @@
                     const data = await res.json();
                     
                     if (data.status === 'success') {
-                        setView('dashboard_pelajar'); // Hantar ke dashboard lepas siap
+                        setView('success');
                     } else if (data.code === 'QUOTA_FULL') {
                         setError(data.message);
                         setPilihan1(''); 
@@ -192,11 +194,19 @@
                 setError('');
             };
 
+            const isSelectedElseWhere = (sportName, currentChoice) => {
+                if (currentChoice !== 1 && pilihan1 === sportName) return true;
+                if (currentChoice !== 2 && pilihan2 === sportName) return true;
+                if (currentChoice !== 3 && pilihan3 === sportName) return true;
+                return false;
+            };
+
+            // Ambil senarai rakan sepasukan (Pilihan 1 yang sama + jantina sama)
             const fetchMembers = async (sportName) => {
                 setLoadingMembers(true);
                 setViewMembersSport(sportName);
                 try {
-                    const res = await fetch(`${API_URL}?action=getMembers&sukan=${encodeURIComponent(sportName)}`, { redirect: 'follow' });
+                    const res = await fetch(`${API_URL}?action=getMembers&sukan=${encodeURIComponent(sportName)}&jantina=${student.jantina}`, { redirect: 'follow' });
                     const data = await res.json();
                     if (data.status === 'success') {
                         setMembersList(data.data);
@@ -209,25 +219,19 @@
                     setLoadingMembers(false);
                 }
             };
-            
+
             const closeMembersModal = () => {
                 setViewMembersSport(null);
                 setMembersList([]);
             };
 
-            const isSelectedElseWhere = (sportName, currentChoice) => {
-                if (currentChoice !== 1 && pilihan1 === sportName) return true;
-                if (currentChoice !== 2 && pilihan2 === sportName) return true;
-                if (currentChoice !== 3 && pilihan3 === sportName) return true;
-                return false;
-            };
-
+            // Komponen Hakmilik (Footer)
             const CopyrightFooter = () => (
                 <div className="w-full text-center py-4 mt-8">
-                    <p className="font-oswald text-[11px] sm:text-xs font-bold tracking-widest text-black uppercase opacity-60 px-4">
+                    <p className="font-oswald text-[11px] sm:text-xs font-bold tracking-widest text-black uppercase opacity-60">
                         Hakmilik Unit Kokurikulum IPG Kampus Darulaman <br className="md:hidden" />
                         <span className="hidden md:inline"> | </span>
-                        Disediakan oleh Haniff Faizal Bin Chek Ani (KeraBerok)
+                        Disediakan oleh Haniff Faizal Bin Chek Ani (Timbalan Ketua Unit)
                     </p>
                 </div>
             );
@@ -237,8 +241,8 @@
                     <div className="flex-grow flex flex-col items-center justify-center p-4">
                         <div className="bg-white neo-border neo-shadow max-w-md w-full p-8 relative mt-10">
                             <div className="absolute -top-4 -left-4 w-16 h-8 bg-[#ccff00] neo-border rotate-[-10deg]"></div>
-                            <h1 className="font-oswald text-4xl mb-2 leading-tight">MPU3421<br/>PELAJAR</h1>
-                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Kokurikulum Permainan.</p>
+                            <h1 className="font-oswald text-4xl mb-2 leading-tight">ZON<br/>ATLET</h1>
+                            <p className="text-gray-600 mb-8 font-medium">Sistem Pemilihan Sukan Kokurikulum.</p>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
                                 <div>
@@ -264,8 +268,10 @@
             if (view === 'selection') {
                 return (
                     <div className="max-w-4xl mx-auto w-full p-4 pb-48">
+                        {}
                         <div className="bg-[#1a1a1a] text-white neo-border p-6 mb-4 mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
                             <div className="flex flex-row items-center gap-4 relative z-10">
+                                {/* Bahagian Gambar Profil */}
                                 {student.gambar ? (
                                     <div className="w-20 h-20 md:w-24 md:h-24 bg-white neo-border flex-shrink-0 overflow-hidden neo-shadow">
                                         <img 
@@ -295,6 +301,7 @@
                             </div>
                         </div>
 
+                        {}
                         <div className="bg-white neo-border p-4 md:p-6 mb-8 neo-shadow">
                             <div className="flex items-center gap-2 mb-4 border-b-4 border-black pb-2">
                                 <i className="ph-fill ph-chart-bar text-2xl"></i>
@@ -322,6 +329,7 @@
                         )}
 
                         <div className="space-y-12">
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-[#ccff00] h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">1</div>
@@ -345,6 +353,7 @@
                                 </div>
                             </section>
 
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-white h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">2</div>
@@ -367,6 +376,7 @@
                                 </div>
                             </section>
 
+                            {}
                             <section>
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="bg-white h-10 w-10 flex items-center justify-center neo-border font-oswald text-xl font-bold">3</div>
@@ -390,8 +400,10 @@
                             </section>
                         </div>
 
+                        {}
                         <div className="fixed bottom-0 left-0 right-0 bg-[#f4f4f0]/95 backdrop-blur-md border-t-4 border-black z-50 flex flex-col items-center">
                             <div className="p-4 max-w-4xl w-full flex items-center justify-between gap-4">
+                                {/* Butang Reset */}
                                 <button 
                                     onClick={handleReset}
                                     className="px-4 py-3 bg-[#ff3366] text-white neo-border font-oswald font-bold neo-shadow neo-shadow-active flex items-center gap-2"
@@ -404,6 +416,7 @@
                                     Status: { (pilihan1 && pilihan2 && pilihan3) ? <span className="bg-black text-[#ccff00] px-3 py-1 font-oswald tracking-widest text-sm neo-border">SEDIA DIHANTAR</span> : <span className="bg-white px-3 py-1 neo-border text-red-500 font-oswald">MENUNGGU PILIHAN</span> }
                                 </div>
 
+                                {/* Butang Hantar */}
                                 <button 
                                     onClick={handleSubmit}
                                     disabled={loading || !pilihan1 || !pilihan2 || !pilihan3}
@@ -421,6 +434,30 @@
                 );
             }
 
+            if (view === 'success') {
+                return (
+                    <div className="flex-grow flex flex-col items-center justify-center p-4">
+                        <div className="bg-[#ccff00] neo-border neo-shadow max-w-lg w-full p-10 text-center relative overflow-hidden mt-10">
+                            <div className="absolute top-[-50px] right-[-50px] text-black/10">
+                                <i className="ph-fill ph-trophy text-[200px]"></i>
+                            </div>
+                            <h1 className="font-oswald text-6xl mb-4 relative z-10 text-black">SELESAI!</h1>
+                            <p className="text-xl font-bold mb-6 relative z-10 text-black">Pilihan sukan anda telah berjaya direkodkan dalam sistem.</p>
+                            
+                            <div className="bg-white p-6 neo-border inline-block relative z-10 text-left mb-8 w-full max-w-sm">
+                                <p className="mb-2 text-sm text-gray-500 font-bold uppercase tracking-widest border-b-2 border-black pb-2">Ringkasan Pilihan</p>
+                                <p className="text-lg mt-2"><strong>1.</strong> {pilihan1}</p>
+                                <p className="text-lg"><strong>2.</strong> {pilihan2}</p>
+                                <p className="text-lg"><strong>3.</strong> {pilihan3}</p>
+                            </div>
+                            
+                            <p className="text-sm font-bold relative z-10 text-black">Sila maklumkan kepada guru/pensyarah anda bahawa proses telah tamat. Anda boleh menutup halaman ini sekarang.</p>
+                        </div>
+                        <div className="mt-auto"><CopyrightFooter /></div>
+                    </div>
+                );
+            }
+
             if (view === 'dashboard_pelajar') {
                 return (
                     <div className="flex-grow flex flex-col items-center justify-start p-4 pt-10 pb-24">
@@ -428,36 +465,36 @@
                             <div className="absolute top-[-20px] right-[-20px] text-black/10 pointer-events-none">
                                 <i className="ph-fill ph-users-three text-[150px]"></i>
                             </div>
-                            
+
                             <h1 className="font-oswald text-4xl md:text-5xl mb-2 relative z-10 text-black">
                                 PROFIL ATLET
                             </h1>
                             <p className="text-lg font-bold mb-6 relative z-10 text-black">
-                                Selamat kembali, {student.nama}. Tahniah pilihan anda telah disahkan dan sila semak senarai rakan anda.
+                                Selamat kembali, {student.nama}. Tahniah, pilihan anda telah disahkan. Sila semak senarai pilihan dan rakan anda di bawah.
                             </p>
-                            
+
                             <div className="space-y-4 relative z-10">
-                                {/* HANYA PAPARKAN PILIHAN 1 SAHAJA */}
                                 {[
-                                    { label: "PILIHAN UTAMA (1) - RAKAN SEPASUKAN", sport: pilihan1 }
+                                    { label: "PILIHAN UTAMA (1) — RAKAN SEPASUKAN", sport: pilihan1, boleh_lihat: true }
                                 ].map((item, idx) => (
                                     <div key={idx} className="bg-white p-6 neo-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div>
                                             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">{item.label}</p>
                                             <p className="text-2xl font-bold mt-1">{item.sport}</p>
                                         </div>
-                                        
-                                        <button 
-                                            onClick={() => fetchMembers(item.sport)}
-                                            className="bg-black text-[#ccff00] px-6 py-4 font-oswald text-lg neo-border flex items-center justify-center gap-2 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(204,255,0,1)] transition-all flex-shrink-0"
-                                        >
-                                            <i className="ph-bold ph-users text-2xl"></i> LIHAT SENARAI
-                                        </button>
-                                        
+
+                                        {item.boleh_lihat && (
+                                            <button
+                                                onClick={() => fetchMembers(item.sport)}
+                                                className="bg-black text-[#ccff00] px-6 py-4 font-oswald text-lg neo-border flex items-center justify-center gap-2 hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(204,255,0,1)] transition-all flex-shrink-0"
+                                            >
+                                                <i className="ph-bold ph-users text-2xl"></i> LIHAT SENARAI
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
-                            
+
                             <div className="mt-8 text-center relative z-10 border-t-4 border-black pt-6">
                                 <button onClick={() => window.location.reload()} className="bg-white px-8 py-3 neo-border font-oswald font-bold neo-shadow neo-shadow-active text-xl flex items-center justify-center gap-2 mx-auto">
                                     <i className="ph-bold ph-sign-out"></i> LOG KELUAR
@@ -479,7 +516,7 @@
                                             <i className="ph-bold ph-x text-xl"></i>
                                         </button>
                                     </div>
-                                    
+
                                     <div className="p-4 overflow-y-auto">
                                         {loadingMembers ? (
                                             <div className="flex flex-col items-center justify-center py-10">
@@ -498,9 +535,6 @@
                                                                     <p className="text-[10px] uppercase font-bold text-gray-500 mt-1">{m.kelas}</p>
                                                                 </div>
                                                             </div>
-                                                            <span className={`px-2 py-1 text-[10px] font-bold border-2 border-black flex-shrink-0 ${m.jantina === 'L' ? 'bg-[#00e5ff]' : 'bg-[#ff3366] text-white'}`}>
-                                                                {m.jantina === 'L' ? 'LELAKI' : 'PEREMPUAN'}
-                                                            </span>
                                                         </li>
                                                     ))}
                                                 </ul>
